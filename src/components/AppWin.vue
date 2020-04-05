@@ -7,12 +7,7 @@
         </template>
       </tabbar>
     </div>
-    <div
-      class="app-win-outer"
-      @touchstart="onTouchStart"
-      @touchmove="onTouchMove"
-      @touchend="onTouchEnd"
-    >
+    <div class="app-win-outer" v-touch-swipe>
       <ul class="app-win-container" :style="{ width:  tabs.length*100 + '%'}">
         <li v-for="(item, index) of tabs" :id="item.id" :style="{ width: 100 / tabs.length + '%' }">
           <slot :name="item.id"></slot>
@@ -25,7 +20,6 @@
 <style>
 .app-win {
   height: 100%;
-  /* overflow: hidden; */
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -42,53 +36,61 @@
   display: flex;
   flex-direction: row;
 }
+
+.app-win-container>li {
+  flex-shrink: 0;
+  flex-grow: 0;
+}
 </style>
 
-<script>
+<script lang='ts'>
 import Tabbar from "./Tabbar.vue";
-import { SwipeContext } from "../utils/eventUtils.js";
-export default {
-  props: {
-    data: {
-      type: Object,
-      required: true
-    }
-  },
+import { SwipeContext } from "../utils/eventUtils";
+import { Component, Prop } from "vue-property-decorator";
+import Vue from "vue";
+import {
+  TouchSwipe,
+  TouchResult,
+  SwipeProcess,
+  Direction,
+  TouchProvider
+} from "../directives/TouchSwipe";
+
+@Component({
   components: {
     tabbar: Tabbar
-  },
-  methods: {
-    onSelectChange: function(id) {
-      this.$store.commit("updateCurrentTab", {
-        parentId: this.data.parentId,
-        id: id
-      });
-      let index = this.getIndex(id);
-      let element = this.$el.querySelector('.app-win-outer');
-      let scrollDistance = index * element.clientWidth;
-      element.scrollLeft = scrollDistance;
-    },
-    getIndex: function(id) {
-      let tabs = this.data.tabs;
-      return tabs.findIndex(tab => tab.id === id);
-    },
-    onTouchStart: function(event) {
-      this.swipeContext = new SwipeContext(event);
-    },
-    onTouchMove: function(event) {
-      let swipeContext = this.swipeContext;
-      let result = swipeContext.clac(event);
-      if (!result) {
-        return;
-      }
-      let direction = result.direction;
-      let distance = result.distance;
-      let element = event.currentTarget;
-      let scrollLeft = swipeContext.originPosition.scrollLeft;
-      let scrollWidth = element.scrollWidth - element.clientWidth;
+  }
+})
+export default class AppWin extends Vue implements TouchProvider {
+  @Prop({ type: Object, required: true }) data: TabsInfo;
+
+  private onSelectChange(id: string): void {
+    this.$store.commit("updateCurrentTab", {
+      parentId: this.data.parentId,
+      id: id
+    });
+    let index = this.getIndex(id);
+    let element = this.$el.querySelector(".app-win-outer");
+    let scrollDistance = index * element.clientWidth;
+    element.scrollLeft = scrollDistance;
+  }
+
+  private getIndex(id: string): number {
+    let tabs = this.data.tabs;
+    return tabs.findIndex(tab => tab.id === id);
+  }
+
+  /** @implements */
+  public touchSwipe(result: TouchResult, event: MouseEvent): void {
+    let process = result.process;
+    let direction = result.direction;
+    let distance = result.distance;
+    let element = event.currentTarget as HTMLElement;
+    let scrollLeft = result.originPosition.scrollLeft;
+    let scrollWidth = element.scrollWidth - element.clientWidth;
+    if (process === SwipeProcess.Move) {
       switch (direction) {
-        // 左滑
-        case 0: {
+        case Direction.Left: {
           event.preventDefault();
           let scrollDistance = scrollLeft + distance;
           if (scrollDistance > scrollWidth) {
@@ -98,8 +100,7 @@ export default {
           }
           break;
         }
-        // 右滑
-        case 1: {
+        case Direction.Right: {
           event.preventDefault();
           let scrollDistance = scrollLeft - distance;
           if (scrollDistance > 0) {
@@ -109,33 +110,20 @@ export default {
           }
           break;
         }
-        // 上滑
-        case 2: {
+        case Direction.Up: {
           break;
         }
-        // 下滑
-        case 3: {
+        case Direction.Down: {
           break;
         }
       }
-    },
-    onTouchEnd: function(event) {
-      let swipeContext = this.swipeContext;
-      let result = this.swipeContext.clac(event);
-      if (!result) {
-        return;
-      }
-      let direction = result.direction;
-      let distance = result.distance;
+    } else if (process === SwipeProcess.End) {
       let speed = result.speed;
-      let element = event.currentTarget;
-      let scrollLeft = swipeContext.originPosition.scrollLeft;
       let clientWidth = element.clientWidth;
-      let scrollWidth = element.scrollWidth - element.clientWidth;
       let canLeave = distance > clientWidth / 2 || speed > 0.7;
       switch (direction) {
         // 左滑
-        case 0: {
+        case Direction.Left: {
           if (canLeave) {
             let scrollDistance = scrollLeft + clientWidth;
             let tabsLength = this.tabs.length;
@@ -148,16 +136,16 @@ export default {
               element.scrollLeft = scrollDistance;
             }
             this.$store.commit("updateCurrentTab", {
-                parentId: this.data.parentId,
-                id: this.tabs[index].id
-              });
+              parentId: this.data.parentId,
+              id: this.tabs[index].id
+            });
           } else {
             element.scrollLeft = scrollLeft;
           }
           break;
         }
         // 右滑
-        case 1: {
+        case Direction.Right: {
           if (canLeave) {
             let scrollDistance = scrollLeft - clientWidth;
             let index;
@@ -169,31 +157,39 @@ export default {
               element.scrollLeft = 0;
             }
             this.$store.commit("updateCurrentTab", {
-                parentId: this.data.parentId,
-                id: this.tabs[index].id
-              });
+              parentId: this.data.parentId,
+              id: this.tabs[index].id
+            });
           } else {
             element.scrollLeft = scrollLeft;
           }
           break;
         }
         // 上滑
-        case 2: {
+        case Direction.Up: {
           console.log("上滑");
           break;
         }
         // 下滑
-        case 3: {
+        case Direction.Down: {
           console.log("下滑");
           break;
         }
       }
     }
-  },
-  computed: {
-    tabs: function() {
-      return this.data.tabs;
-    }
   }
-};
+
+  /** @implements */
+  public touchResize(element: HTMLElement, event: Event): void {
+    let currentTab = this.data.currentTab;
+    let index = this.getIndex(currentTab);
+    let scrollWidth = element.scrollWidth;
+    let clientWidth = element.clientWidth;
+    element.scrollLeft = index * clientWidth;
+  }
+
+  get tabs() {
+    return this.data.tabs;
+  }
+}
 </script>

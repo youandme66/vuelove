@@ -1,7 +1,12 @@
 <template>
   <div id="app">
     <div class="app-container">
-      <app-win v-for="(item, index) of tabInfo.tabs" :data="item.childrens" :key="index" v-show="item.id===tabInfo.currentTab">
+      <app-win
+        v-for="(item, index) of tabInfo.tabs"
+        :data="item.childrens"
+        :key="index"
+        v-show="item.id===tabInfo.currentTab"
+      >
         <template v-slot:recommend v-if="item.id==='home'">
           <recommend></recommend>
         </template>
@@ -40,9 +45,8 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
 import { mapState } from "vuex";
-import MODULE_TYPE from "../stores/module-type";
 import Tabbar from "../components/Tabbar.vue";
 import Recommend from "./Recommend.vue";
 import FriendRecommend from "./FriendRecommend.vue";
@@ -54,34 +58,37 @@ import BlindDate from "./BlindDate.vue";
 import Exclusive from "./Exclusive.vue";
 import Buddy from "./Buddy.vue";
 import AppWin from "../components/AppWin.vue";
+import Vue from "vue";
+import { Component } from "vue-property-decorator";
 
-export default {
+@Component({
   components: {
-    "tabbar": Tabbar,
+    tabbar: Tabbar,
     "app-win": AppWin,
-    "recommend": Recommend,
+    recommend: Recommend,
     "friend-recommend": FriendRecommend,
-    "message": Message,
+    message: Message,
     "make-friends": MakeFriends,
-    "my": My,
+    my: My,
     "same-city": SameCity,
     "blind-date": BlindDate,
-    "exclusive": Exclusive,
-    "buddy": Buddy
+    exclusive: Exclusive,
+    buddy: Buddy
   },
   computed: mapState({
-    tabInfo: state => {
-      return state[MODULE_TYPE.APP].tabInfo;
+    tabInfo: (state: ModuleState) => {
+      return state.app.tabInfo;
     }
-  }),
-  methods: {
-    onSelectChange: function(id) {
-      this.$store.commit("updateCurrentTab", {
-          id: id
-      });
-    }
+  })
+})
+export default class App extends Vue {
+  
+  private onSelectChange(id: string): void {
+    this.$store.commit("updateCurrentTab", {
+      id: id
+    });
   }
-};
+}
 </script>
 
 <style>

@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 module.exports = {
     entry:{
-        app:'./src/index.js' // 入口文件的位置
+        app:'./src/index.ts' // 入口文件的位置
     },
     output:{
         filename:'[name].[hash].js', // 输出文件名字的格式
@@ -19,6 +19,8 @@ module.exports = {
         new VueLoaderPlugin()
     ],
     resolve: {
+        // 引入模块的时候可以少写后缀
+        extensions:['.js', '.vue', '.json', '.ts', '.tsx'],
         alias: {
             '@': resolve('src')
         }

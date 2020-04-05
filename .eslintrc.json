@@ -1,0 +1,29 @@
+{
+    "env": {
+		"browser": true,
+		"commonjs": true,
+		"es6": true,
+		"node": true
+    },
+    "parserOptions": {
+		"ecmaFeatures": {
+			"jsx": true
+		},
+		"sourceType": "module",
+		"ecmaVersion": 8
+	},
+    "rules": {
+		"no-const-assign": "warn",
+		"no-this-before-super": "warn",
+		"no-undef": "warn",
+		"no-unreachable": "warn",
+		"no-unused-vars": ["warn", { //https://eslint.org/docs/rules/no-unused-vars
+			"vars": "all",
+			"args": "none", //函数参数未用到不要提示
+			"ignoreRestSiblings": false
+		}],
+		"no-debugger": "warn",
+		"constructor-super": "warn",
+		"valid-typeof": "warn"
+	}
+}

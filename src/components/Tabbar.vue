@@ -32,24 +32,20 @@
 }
 </style>
 
-<script>
-import moduleType from '../stores/module-type';
-export default {
-    props: {
-        data: {
-            type: Object,
-            required: true
-        }
-    },
-    methods: {
-        selectChange: function(e) {
-            let srcElement = e.srcElement;
-            let tabbarItem = srcElement.closest('.app-tabbar-item');
+<script lang='ts'>
+import Vue from 'vue'
+import { Component, Prop } from 'vue-property-decorator';
+@Component
+export default class Tabbar extends Vue {
+    @Prop({ type: Object, required: true }) data: TabsInfo;
+
+    private selectChange(e: MouseEvent): void {
+        let srcElement = e.srcElement as HTMLElement;
+        let tabbarItem = srcElement.closest('.app-tabbar-item');
             if (tabbarItem) {
                 let id = tabbarItem.id;
                 this.$emit('select-change', id);
             }
-        }
     }
 }
 </script>

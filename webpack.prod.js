@@ -25,6 +25,11 @@ module.exports = merge(common, {
                     loader: 'file-loader',
                     options: {}
                 }]
+            }, 
+            {
+                test: /\.tsx?$/,
+                loader: 'ts-loader',
+                options: { transpileOnly: true, appendTsSuffixTo: [/.vue$/] }
             }
         ]
     },

@@ -1,13 +1,46 @@
+interface OriginPosition {
+    x: number;
+    y: number;
+    scrollLeft: number;
+    scrollTop: number;
+}
+
+/**
+ * 触摸结果
+ */
+interface TouchResult {
+    /**
+     * 滑动方向
+     */
+    direction: number;
+
+    /**
+     * 滑动速度
+     */
+    speed: number;
+
+    /**
+     * 滑动距离
+     */
+    distance: number;
+}
+
 export class SwipeContext {
 
-    constructor(event) {
+    private touching: boolean;
+
+    public originPosition: OriginPosition;
+
+    private startTime: number;
+
+    public constructor(event: TouchEvent) {
         let changedTouches = event.changedTouches;
         if (changedTouches.length > 1) {
             this.touching = false;
         } else {
             this.touching = true;
             let touchEvent = changedTouches[0];
-            let element = event.currentTarget;
+            let element = event.currentTarget as HTMLElement;
             this.originPosition = {
                 x: touchEvent.clientX,
                 y: touchEvent.clientY,
@@ -19,15 +52,16 @@ export class SwipeContext {
     }
 
     /**
+     * 计算滑动过程
      * 左滑0
      * 右滑1
      * 上滑2
      * 下滑3
      * @param event 
      */
-    clac(event) {
+    public clac(event: TouchEvent): TouchResult {
         if (!this.touching) {
-            return;
+            return null;
         }
         let touchEvent = event.changedTouches[0];
         let lastX = touchEvent.clientX;

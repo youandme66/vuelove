@@ -1,4 +1,6 @@
-const state = {
+import { GetterTree, ActionTree, MutationTree, Module } from "vuex";
+
+const state: AppState = {
     tabInfo: {
         currentTab: 'home',
         tabs: [{
@@ -77,20 +79,19 @@ const state = {
     }
 };
 
-const getters = {
+const getters: GetterTree<AppState, JSONObject> = {
+};
+
+const actions: ActionTree<AppState, JSONObject> = {
 
 };
 
-const actions = {
-
-};
-
-const mutations = {
+const mutations: MutationTree<AppState> = {
     updateCurrentTab: function (state, data) {
         let parentId = data.parentId;
         let id = data.id;
         if (parentId) {
-            state.tabInfo.tabs.forEach(item => {
+            state.tabInfo.tabs.forEach((item: any) => {
                 if (item.id === parentId) {
                     item.childrens.currentTab = id;
                 }
@@ -101,9 +102,11 @@ const mutations = {
     }
 }
 
-export default {
+const module: Module<AppState, JSONObject> = {
     state,
     getters,
     actions,
     mutations
 };
+
+export default module;
