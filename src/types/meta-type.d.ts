@@ -11,6 +11,7 @@ declare const enum ModuleType {
  */
 declare interface ModuleState {
     app?: AppState;
+    recommend?: RecommendState;
     [key: string]: any;
 }
 
@@ -19,4 +20,18 @@ declare interface ModuleState {
  */
 interface Vue {
     [key: string]: any;
+}
+
+/**
+ * 应用所有的数据驱动type
+ */
+declare const enum MutationType {
+    AddPersonInfos = 'addPersonInfos'
+}
+
+/**
+ * 应用所有的异步请求type
+ */
+declare const enum ActionType {
+    RequestPersonInfos = 'requestPersonInfos'
 }

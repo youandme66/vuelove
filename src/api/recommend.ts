@@ -1,0 +1,150 @@
+const personInfos: Array<PersonInfo> = [{
+    id: '1',
+    name: '红娘七月',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '我想找26-36的异性',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '2',
+    name: '火红的樱桃',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '等待一场姹紫嫣红的花似事的幸福',
+    sex: Sex.FeMale
+}, {
+    id: '3',
+    name: '女儿国的软糖',
+    age: 23,
+    provincialArea: '湖北',
+    remark: '可乐要两根吸管才好喝',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.FeMale
+}, {
+    id: '4',
+    name: '红娘七月',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '我想找26-36的异性',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '5',
+    name: '火红的樱桃',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '等待一场姹紫嫣红的花似事的幸福',
+    sex: Sex.Male
+}, {
+    id: '6',
+    name: '女儿国的软糖',
+    age: 23,
+    provincialArea: '湖北',
+    remark: '可乐要两根吸管才好喝',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '7',
+    name: '红娘七月',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '我想找26-36的异性',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '8',
+    name: '火红的樱桃',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '等待一场姹紫嫣红的花似事的幸福',
+    sex: Sex.Male
+}, {
+    id: '9',
+    name: '女儿国的软糖',
+    age: 23,
+    provincialArea: '湖北',
+    remark: '可乐要两根吸管才好喝',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '10',
+    name: '红娘七月',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '我想找26-36的异性',
+    sex: Sex.Male
+}, {
+    id: '11',
+    name: '火红的樱桃',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '等待一场姹紫嫣红的花似事的幸福',
+    sex: Sex.Male
+}, {
+    id: '12',
+    name: '女儿国的软糖',
+    age: 23,
+    provincialArea: '湖北',
+    remark: '可乐要两根吸管才好喝',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '13',
+    name: '红娘七月',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '我想找26-36的异性',
+    sex: Sex.Male
+}, {
+    id: '14',
+    name: '火红的樱桃',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '等待一场姹紫嫣红的花似事的幸福',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '15',
+    name: '女儿国的软糖',
+    age: 23,
+    provincialArea: '湖北',
+    remark: '可乐要两根吸管才好喝',
+    sex: Sex.Male
+}, {
+    id: '16',
+    name: '红娘七月',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '我想找26-36的异性',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '17',
+    name: '火红的樱桃',
+    age: 27,
+    provincialArea: '湖北',
+    remark: '等待一场姹紫嫣红的花似事的幸福',
+    status: Status.Online,
+    isFollow: true,
+    sex: Sex.Male
+}, {
+    id: '18',
+    name: '女儿国的软糖',
+    age: 23,
+    provincialArea: '湖北',
+    remark: '可乐要两根吸管才好喝',
+    sex: Sex.Male
+}]
+export function getPersonInfos(index: number, count: number): Promise<Array<PersonInfo>> {
+    return Promise.resolve(personInfos.slice(index * count, count));
+}

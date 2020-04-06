@@ -47,7 +47,7 @@ const state: AppState = {
                     id: 'buddy',
                     caption: '好友'
                 }, {
-                    id: 'recommend',
+                    id: 'friendRecommend',
                     caption: '推荐'
                 }]
             }

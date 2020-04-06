@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[2],{22:function(e,t,n){"use strict";n.r(t);var i=function(){var e=this.$createElement;return(this._self._c||e)("div")};i._withStripped=!0;var l={},s=n(0),r=Object(s.a)(l,i,[],!1,null,null,null);r.options.__file="src/pages/MyWallet.vue";t.default=r.exports}}]);

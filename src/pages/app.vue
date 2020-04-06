@@ -25,7 +25,7 @@
         <template v-slot:buddy v-if="item.id==='status'">
           <buddy></buddy>
         </template>
-        <template v-slot:recommend v-if="item.id==='status'">
+        <template v-slot:friendRecommend v-if="item.id==='status'">
           <friend-recommend></friend-recommend>
         </template>
         <template v-slot:message v-if="item.id==='message'">
@@ -105,6 +105,7 @@ export default class App extends Vue {
 }
 .app-container {
   flex: 1;
+  overflow: hidden;
 }
 
 #app {
